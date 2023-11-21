@@ -10,8 +10,8 @@ import {
 import React, {useCallback} from 'react';
 import {GradientBackground} from '../../../components/organism';
 import {fonts} from '../../../themes/fonts';
-import {currentCityAtom} from '../state';
-import {useAtomValue} from 'jotai';
+import {TabMenu, currentCityAtom, menus, selectedMenuAtom} from '../state';
+import {useAtom, useAtomValue} from 'jotai';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackNavigationProp} from '../../../navigation/types';
 
@@ -22,6 +22,7 @@ const Home: React.FunctionComponent = () => {
         <LocationChangerButton />
         <Greeting />
         <SearchBox />
+        <HomeTabMenu />
       </ScrollView>
     </GradientBackground>
   );
@@ -114,5 +115,42 @@ const SearchBox: React.FunctionComponent = () => {
         Search for what you need...
       </Text>
     </Pressable>
+  );
+};
+
+const HomeTabMenu: React.FunctionComponent = () => {
+  const [selectedMenu, setSelectedMenu] = useAtom(selectedMenuAtom);
+
+  const handlePress = useCallback((menu: TabMenu) => {
+    setSelectedMenu(menu);
+  }, []);
+
+  return (
+    <Box mt="md" mx="sm" flexDirection="row" alignItems="center">
+      {menus.map((e, index) => {
+        const isSelected = selectedMenu === e;
+        return (
+          <Pressable
+            onPress={() => handlePress(e)}
+            borderRadius="sm"
+            px="md"
+            mr="sm"
+            py="xs"
+            style={{
+              backgroundColor: isSelected
+                ? 'rgba(0,244,0,0.3)'
+                : 'rgba(0,0,0,0.05)',
+            }}
+            key={index}>
+            <Text
+              fontSize={14}
+              fontFamily={fonts.PoppinsRegular}
+              color="$black">
+              {e}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </Box>
   );
 };
