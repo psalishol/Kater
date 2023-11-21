@@ -1,5 +1,6 @@
-import {Box, Text} from '../../../components/atom';
-import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {AntDesign, Box, Pressable, Text} from '../../../components/atom';
+import React, {useCallback} from 'react';
 
 const SignUp: React.FunctionComponent = () => {
   return (
@@ -10,3 +11,17 @@ const SignUp: React.FunctionComponent = () => {
 };
 
 export default SignUp;
+
+const SignupBackPress = () => {
+  const navigation = useNavigation();
+
+  const handlePress = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  return (
+    <Pressable onPress={handlePress}>
+      <AntDesign name="arrowleft" color={'$black'} />
+    </Pressable>
+  );
+};
