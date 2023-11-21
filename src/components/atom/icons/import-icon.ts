@@ -1,0 +1,12 @@
+export {default as AntDesignIcon} from 'react-native-vector-icons/AntDesign';
+export {default as EntypoIcons} from 'react-native-vector-icons/Entypo';
+export {default as EvilIconsI} from 'react-native-vector-icons/EvilIcons';
+export {default as FeatherIcon} from 'react-native-vector-icons/Feather';
+export {default as FontistoIcon} from 'react-native-vector-icons/Fontisto';
+export {default as IoniconsIcon} from 'react-native-vector-icons/Ionicons';
+export {default as MaterialCommunityIconsI} from 'react-native-vector-icons/MaterialCommunityIcons';
+export {default as OcticonsI} from 'react-native-vector-icons/Octicons';
+export {default as ZocialIcons} from 'react-native-vector-icons/Zocial';
+export {default as SimpleLineIconI} from 'react-native-vector-icons/SimpleLineIcons';
+export {default as MaterialIconsI} from 'react-native-vector-icons/MaterialIcons';
+export {default as FontAwesome5Icon} from 'react-native-vector-icons/FontAwesome5';
