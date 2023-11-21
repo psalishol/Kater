@@ -22,14 +22,12 @@ export const getLocation = async (
 
     if (response.data.status === 'OK' && response.data.results.length > 0) {
       const addressComponents = response.data.results[0].address_components;
-      const currency = Object.keys(response.data.rates)[0];
 
       let location: Location = {
         state: '',
         city: '',
         country: '',
         fullAdress: response.data.results[0].formatted_address ?? '',
-        currency,
       };
 
       for (const component of addressComponents) {
