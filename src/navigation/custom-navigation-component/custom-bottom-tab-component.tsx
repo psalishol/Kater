@@ -3,6 +3,7 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import React, {memo, useCallback} from 'react';
 import {size} from '../../helper';
 import {
+  AntDesign,
   Box,
   Feather,
   Ionicons,
@@ -81,7 +82,7 @@ const BottomTabNavigationItem: React.FC<Props> = ({
     console.log(focused, navigation, routeKey, routeName);
   }, [focused, navigation, routeKey, routeName]);
 
-  const color: ResponsiveColorPropType = focused ? '$green' : '$black';
+  const color: ResponsiveColorPropType = focused ? '$deepGreen' : '$black';
 
   return (
     <>
@@ -98,12 +99,21 @@ const BottomTabNavigationItem: React.FC<Props> = ({
         onPress={handlePress}>
         {routeName === 'Home' && (
           <Box mt={'md'} justifyContent={'center'} alignItems={'center'}>
-            <Feather name="image" color={color} />
+            <AntDesign name="home" color={color} />
             <Text color={color} fontSize={size(12)} mt={'sm'}>
               Home
             </Text>
           </Box>
         )}
+        {routeName === 'Cart' && (
+          <Box mt={'md'} justifyContent={'center'} alignItems={'center'}>
+            <Feather name="shopping-cart" color={color} />
+            <Text color={color} fontSize={size(12)} mt={'sm'}>
+              Cart
+            </Text>
+          </Box>
+        )}
+
         {routeName === 'Messages' && (
           <Box mt={'md'} justifyContent={'center'} alignItems={'center'}>
             <MaterialCommunityIcons name="message-text-outline" color={color} />
@@ -116,7 +126,7 @@ const BottomTabNavigationItem: React.FC<Props> = ({
           <Box mt={'md'} justifyContent={'center'} alignItems={'center'}>
             <Ionicons name="person-circle-outline" color={color} />
             <Text color={color} fontSize={size(12)} mt={'sm'}>
-              Profile
+              Account
             </Text>
           </Box>
         )}
