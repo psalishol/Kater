@@ -135,7 +135,7 @@ const RenderLocation = () => {
           return {...prev, city, state};
         }
 
-        return {country: '', fullAdress: '', city, state};
+        return {country: '', fullAdress: '', currency: '', city, state};
       });
 
       // Close the bottom sheet
