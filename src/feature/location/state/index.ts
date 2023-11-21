@@ -21,3 +21,6 @@ export interface Location {
 
 // Atom storing the state of the user current city.
 export const currentLocationAtom = atom<Location | undefined>(undefined);
+
+//holds the current country city and state
+export const countryCityStateAtom = atom<string[] | undefined>(undefined);
