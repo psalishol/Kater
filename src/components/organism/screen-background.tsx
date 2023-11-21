@@ -7,10 +7,11 @@ import {useDecodeRestyleColor} from '../../hooks';
 interface Props {
   color?: ResponsiveColorPropType;
   children: React.ReactNode;
+  statusbarColor?: string;
 }
 
 const ScreenBackground: React.FunctionComponent<Props> = Props => {
-  const {children, color} = Props;
+  const {children, color, statusbarColor} = Props;
 
   const {color: backgroundColor} = useDecodeRestyleColor(color);
 
@@ -18,7 +19,10 @@ const ScreenBackground: React.FunctionComponent<Props> = Props => {
 
   return (
     <Box style={{backgroundColor}} flex={1}>
-      <StatusBar barStyle={content} backgroundColor={backgroundColor} />
+      <StatusBar
+        barStyle={content}
+        backgroundColor={statusbarColor ?? backgroundColor}
+      />
       <SafeAreaView
         style={{backgroundColor: backgroundColor ?? 'white', flex: 1}}>
         {children}
