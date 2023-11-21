@@ -19,7 +19,7 @@ import {
   selectedSearchFilterAtom,
   selectors,
 } from '../state';
-import {useAtomValue} from 'jotai';
+import {useAtom, useAtomValue} from 'jotai';
 
 const SearchScreen: React.FunctionComponent = () => {
   return (
@@ -34,7 +34,7 @@ const SearchScreen: React.FunctionComponent = () => {
 export default SearchScreen;
 
 const SearchFilterSelectorComp = () => {
-  const selectedFilter = useAtomValue(selectedSearchFilterAtom);
+  const [selectedFilter, setSelectedFilter] = useAtom(selectedSearchFilterAtom);
 
   const getIcon = (e: SearchFilterSelector, isSelected: boolean) => {
     const color = isSelected ? '$white' : '$black';
@@ -58,12 +58,20 @@ const SearchFilterSelectorComp = () => {
     }
   };
 
+  const handleSelectFilter = useCallback(
+    (e: SearchFilterSelector) => {
+      setSelectedFilter(e);
+    },
+    [setSelectedFilter],
+  );
+
   return (
     <Box ml="sm" mt="sm" flexDirection="row" alignItems="center">
       {selectors.map((e, i) => {
         const selected = e === selectedFilter;
         return (
-          <Box
+          <Pressable
+            onPress={() => handleSelectFilter(e)}
             borderRadius="xs"
             justifyContent="center"
             alignItems="center"
@@ -85,7 +93,7 @@ const SearchFilterSelectorComp = () => {
               fontFamily={fonts.RobotoRegular}>
               {e}
             </Text>
-          </Box>
+          </Pressable>
         );
       })}
     </Box>
