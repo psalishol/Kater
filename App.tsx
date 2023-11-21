@@ -6,6 +6,7 @@ import {lightTheme, theme} from './src/themes/theme';
 import {NavigationContainer} from '@react-navigation/native';
 import {Navigatioon} from './src/navigation';
 import {PortalProvider} from '@gorhom/portal';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 function App(): JSX.Element {
   return (
@@ -25,9 +26,11 @@ const Entry: React.FunctionComponent = () => {
   return (
     <ThemeProvider theme={appTheme}>
       <NavigationContainer>
-        <PortalProvider>
-          <Navigatioon />
-        </PortalProvider>
+        <GestureHandlerRootView style={{flex: 1}}>
+          <PortalProvider>
+            <Navigatioon />
+          </PortalProvider>
+        </GestureHandlerRootView>
       </NavigationContainer>
     </ThemeProvider>
   );
