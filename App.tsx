@@ -5,6 +5,7 @@ import {ThemeProvider} from '@shopify/restyle';
 import {lightTheme, theme} from './src/themes/theme';
 import {NavigationContainer} from '@react-navigation/native';
 import {Navigatioon} from './src/navigation';
+import {PortalProvider} from '@gorhom/portal';
 
 function App(): JSX.Element {
   return (
@@ -24,7 +25,9 @@ const Entry: React.FunctionComponent = () => {
   return (
     <ThemeProvider theme={appTheme}>
       <NavigationContainer>
-        <Navigatioon />
+        <PortalProvider>
+          <Navigatioon />
+        </PortalProvider>
       </NavigationContainer>
     </ThemeProvider>
   );
