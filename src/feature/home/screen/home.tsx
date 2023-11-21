@@ -8,6 +8,8 @@ import {
 import React, {useCallback} from 'react';
 import {GradientBackground} from '../../../components/organism';
 import {fonts} from '../../../themes/fonts';
+import {currentCityAtom} from '../state';
+import {useAtomValue} from 'jotai';
 
 const Home: React.FunctionComponent = () => {
   return (
@@ -24,6 +26,8 @@ export default Home;
 const LocationChangerButton: React.FunctionComponent = () => {
   const handlePress = useCallback(() => {}, []);
 
+  const currentCity = useAtomValue(currentCityAtom);
+
   return (
     <Touchable
       px="xs"
@@ -37,7 +41,7 @@ const LocationChangerButton: React.FunctionComponent = () => {
       alignItems="center">
       <Entypo size={18} name="location-pin" color={'$black'} />
       <Text ml="xs" fontFamily={fonts.InterMedium} color="$black">
-        Ikorodu, Lagos
+        {currentCity}
       </Text>
     </Touchable>
   );
