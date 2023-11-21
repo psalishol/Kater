@@ -36,6 +36,8 @@ const theme = createTheme({
     $white: palletes.white,
     $red: '#ff0000',
     $green: 'rgba(0,244,0,1)',
+    $overlayColor: 'rgba(0,0,0,0.1)',
+    $deepGreen: 'rgba(0,210,0,1)',
   },
   keyboard: {
     keyboardAppearance: 'dark' as KeyboardAppearance,
