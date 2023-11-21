@@ -24,3 +24,6 @@ export const currentLocationAtom = atom<Location | undefined>(undefined);
 
 //holds the current country city and state
 export const countryCityStateAtom = atom<string[] | undefined>(undefined);
+
+// state to open change location sheet
+export const openChangeLocation = atom<boolean>(false);
