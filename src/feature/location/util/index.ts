@@ -57,26 +57,33 @@ export const getLocation = async (
  */
 export const getCountryCityState = async (
   country?: string,
-): Promise<string[] | undefined> => {
+): Promise<{city: string; state: string}[] | undefined> => {
   const req = new RequestService();
 
-  const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${country}&types=(cities)&key=${apiKey}`;
+  const apiUrl = 'https://andruxnet-world-cities-v1.p.rapidapi.com/';
 
   try {
-    const response = await req.getRequest(apiUrl);
+    const response = await req.getRequest(
+      apiUrl,
+      {
+        query: country,
+        searchby: 'country',
+      },
+      true,
+    );
 
-    if (response.data.status === 'OK') {
-      const location = response.data.predictions.map((prediction: any) => {
-        const city = prediction.structured_formatting.main_text;
-        const state = prediction.structured_formatting.secondary_text;
-        return `${city}, ${state}`;
+    if (response?.data && !!response.data) {
+      const locationMap = response.data.map((location: any) => {
+        return {
+          city: location.city,
+          state: location.state,
+        };
       });
 
-      return location;
-    } else {
-      console.error('Error fetching cities:', response.data.status);
-      return undefined;
+      return locationMap;
     }
+
+    return [];
   } catch (error) {
     console.error('Error fetching cities:', error);
   }
