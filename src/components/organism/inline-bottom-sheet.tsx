@@ -14,15 +14,13 @@ interface Props {
   show: boolean;
   renderView?: () => JSX.Element;
   overlayOpacity?: number;
-  snapPoints: Array<string>;
   useHandle?: boolean;
   onOverlayPressed?: () => void;
   closeSheet: () => void;
 }
 
 const InlineBottomSheet: React.FunctionComponent<Props> = props => {
-  const {show, renderView, snapPoints, useHandle, overlayOpacity, closeSheet} =
-    props;
+  const {show, renderView, useHandle, overlayOpacity, closeSheet} = props;
 
   const [openSheet, setOpenSheet] = useState<boolean>(false);
 
