@@ -17,6 +17,7 @@ export interface Location {
   state: string;
   country: string;
   fullAdress: string;
+  currency: string;
 }
 
 // Atom storing the state of the user current city.
@@ -34,3 +35,5 @@ export const openChangeLocation = atom<boolean>(false);
 export const locationFilterQueryAtom = atom<string>('');
 
 export const cleanLocationRenderAtom = atom<boolean>(true);
+
+export const countryCurrencyAtom = atom<string>('');
