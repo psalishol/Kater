@@ -15,7 +15,7 @@ const GradientBackground: React.FunctionComponent<Props> = ({children}) => {
   const {top} = useSafeAreaInsets();
 
 
-  const color = 'rgba(30,10,0,1)'
+  const color = 'rgba(0,244,0,0.2)'
 
   const gradient = useMemo(
     () => [
