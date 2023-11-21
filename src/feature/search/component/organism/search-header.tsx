@@ -32,9 +32,11 @@ const SearchScreenHeader: React.FunctionComponent = () => {
         />
       </Box>
 
-      <Pressable p="sm" mx="sm">
+      <Box p="sm" mx="sm" />
+
+      {/* <Pressable p="sm" mx="sm">
         <Ionicons name="filter" color={'$black'} />
-      </Pressable>
+      </Pressable> */}
     </Box>
   );
 };
