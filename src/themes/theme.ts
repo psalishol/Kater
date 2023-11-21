@@ -32,6 +32,10 @@ const theme = createTheme({
   colors: {
     $primary: palletes.black,
     $foreground: palletes.white,
+    $black: palletes.black,
+    $white: palletes.white,
+    $red: '#ff0000',
+    $green: 'rgba(0,244,0,1)',
   },
   keyboard: {
     keyboardAppearance: 'dark' as KeyboardAppearance,
