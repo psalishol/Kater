@@ -4,7 +4,7 @@ import {GradientBackground} from '../../../components/organism';
 import {LocationChangerButton, SearchBox} from '../component/molecules';
 import {Greeting} from '../component/atom';
 import {HomeTabMenu} from '../component/organism';
-import {useGetDeviceLatLng} from '../../location';
+import {CountryLocation, useGetDeviceLatLng} from '../../location';
 
 const Home: React.FunctionComponent = () => {
   useGetDeviceLatLng();
@@ -16,6 +16,7 @@ const Home: React.FunctionComponent = () => {
         <SearchBox />
         <HomeTabMenu />
       </ScrollView>
+      <CountryLocation />
     </GradientBackground>
   );
 };
