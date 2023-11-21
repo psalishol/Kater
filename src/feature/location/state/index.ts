@@ -17,8 +17,10 @@ export interface Location {
   state: string;
   country: string;
   fullAdress: string;
-  currency: string;
 }
+
+// Stores the country currency
+export const currentLocationCurrencyAtom = atom<string | undefined>(undefined);
 
 // Atom storing the state of the user current city.
 export const currentLocationAtom = atom<Location | undefined>(undefined);
