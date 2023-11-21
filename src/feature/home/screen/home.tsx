@@ -1,6 +1,8 @@
 import {
+  AntDesign,
   Box,
   Entypo,
+  Pressable,
   ScrollView,
   Text,
   Touchable,
@@ -10,12 +12,16 @@ import {GradientBackground} from '../../../components/organism';
 import {fonts} from '../../../themes/fonts';
 import {currentCityAtom} from '../state';
 import {useAtomValue} from 'jotai';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackNavigationProp} from '../../../navigation/types';
 
 const Home: React.FunctionComponent = () => {
   return (
     <GradientBackground>
       <ScrollView>
         <LocationChangerButton />
+        <Greeting />
+        <SearchBox />
       </ScrollView>
     </GradientBackground>
   );
@@ -48,6 +54,7 @@ const LocationChangerButton: React.FunctionComponent = () => {
 };
 
 const Greeting: React.FunctionComponent = () => {
+  const username = 'Psalishol';
   return (
     <Box mx="sm">
       <Text
@@ -55,7 +62,7 @@ const Greeting: React.FunctionComponent = () => {
         fontFamily={fonts.PoppinsMedium}
         mt="lg"
         color="$black">
-        Hello Psalishol
+        Hello {username}
       </Text>
 
       <Text
@@ -79,5 +86,33 @@ const Greeting: React.FunctionComponent = () => {
         </Text>
       </Text>
     </Box>
+  );
+};
+
+const SearchBox: React.FunctionComponent = () => {
+  const navigation = useNavigation<RootStackNavigationProp<'Search'>>();
+
+  const handlePress = useCallback(() => {
+    navigation.navigate('Search');
+  }, [navigation]);
+
+  return (
+    <Pressable
+      onPress={handlePress}
+      style={{backgroundColor: 'rgba(0,0,0,0.05)'}}
+      mt="md"
+      mx="sm"
+      py="sm"
+      borderRadius="sm"
+      flexDirection="row"
+      alignItems="center"
+      px="md">
+      <Box opacity={0.5}>
+        <AntDesign color={'$black'} name="search1" />
+      </Box>
+      <Text opacity={0.5} ml="sm" color="$black">
+        Search for what you need...
+      </Text>
+    </Pressable>
   );
 };
