@@ -1,12 +1,20 @@
-import {useAtom, useAtomValue} from 'jotai';
+import {useAtom, useAtomValue, useSetAtom} from 'jotai';
 import {Entypo, Text, Touchable} from '../../../../components/atom';
 import {fonts} from '../../../../themes/fonts';
 import {useCallback, useEffect} from 'react';
-import {currentLocationAtom, deviceLatLngAtom} from '../../../location';
+import {
+  currentLocationAtom,
+  deviceLatLngAtom,
+  openChangeLocation,
+} from '../../../location';
 import {getLocation} from '../../../location/util';
 
 const LocationChangerButton: React.FunctionComponent = () => {
-  const handlePress = useCallback(() => {}, []);
+  const setOpenChangeLocationSheet = useSetAtom(openChangeLocation);
+
+  const handlePress = useCallback(() => {
+    setOpenChangeLocationSheet(true);
+  }, [setOpenChangeLocationSheet]);
 
   const [currentLocation, setCurrentLocation] = useAtom(currentLocationAtom);
 
@@ -31,6 +39,7 @@ const LocationChangerButton: React.FunctionComponent = () => {
       mx="sm"
       py="xxs"
       borderRadius="xs"
+      onPress={handlePress}
       style={{backgroundColor: 'rgba(0,0,0,0.1)'}}
       alignSelf="baseline"
       mt="md"
