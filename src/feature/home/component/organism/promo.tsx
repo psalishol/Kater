@@ -9,6 +9,36 @@ import {
 import {screenHeight, screenWidth} from '../../../../constant';
 import {fonts} from '../../../../themes/fonts';
 import {ViewPromoButton, MessageStoreButton} from '../molecules';
+import {memo} from 'react';
+
+interface Props {
+  // Id of the merchant store that posted the promo
+  merchantID: string;
+
+  // Id of the Promo
+  promoID: string;
+
+  // Image Url of the Merchant store.
+  storeImgUri: string;
+
+  // Url of the promo/bonus flyer
+  flyerImgUri?: string[];
+
+  // Promo Text/ the description
+  promoText: string;
+
+  // Indicates the date promo starts
+  startDate: string;
+
+  // Indicates the date promo ends
+  endDate: string;
+
+  // Name of the store that listed the promo
+  storeName: string;
+
+  // Address of the store
+  address: string;
+}
 
 const Promo: React.FunctionComponent = () => {
   const imguri = 'https://avatars.githubusercontent.com/u/85138073?v=4';
@@ -110,4 +140,4 @@ const Promo: React.FunctionComponent = () => {
   );
 };
 
-export default Promo;
+export default memo<Props>(Promo);
