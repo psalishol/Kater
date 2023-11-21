@@ -13,7 +13,7 @@ interface Props {
 const ModalInput: React.FunctionComponent<Props> = props => {
   const {value, onChangeText, placeholder, autoFocus, clearText} = props;
 
-  const TEXT_INPUT_HEIGHT = 50;
+  const TEXT_INPUT_HEIGHT = 40;
 
   return (
     <Box
