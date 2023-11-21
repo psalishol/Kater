@@ -8,8 +8,14 @@ export interface DeviceLatLng {
   lng: number;
 }
 
+// TabMenu defines the type for the home tab menu
+export type TabMenu = 'Promos' | 'Products';
+
 // Atom storing the state of the user current city.
 export const currentCityAtom = atom<string | undefined>(undefined);
 
 // Atom storing the state of device latitude and longitude.
 export const deviceLatLngAtom = atom<DeviceLatLng | undefined>(undefined);
+
+// Atom storing the current selected menu tab.
+export const selectedMenuAtom = atom<TabMenu>('Promos');
