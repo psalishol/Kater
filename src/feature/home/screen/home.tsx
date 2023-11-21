@@ -46,3 +46,38 @@ const LocationChangerButton: React.FunctionComponent = () => {
     </Touchable>
   );
 };
+
+const Greeting: React.FunctionComponent = () => {
+  return (
+    <Box mx="sm">
+      <Text
+        fontSize={20}
+        fontFamily={fonts.PoppinsMedium}
+        mt="lg"
+        color="$black">
+        Hello Psalishol
+      </Text>
+
+      <Text
+        mt="lg"
+        fontFamily={fonts.PoppinsSemiBold}
+        fontSize={30}
+        color="$black">
+        <Text
+          fontFamily={fonts.PoppinsSemiBold}
+          fontSize={30}
+          style={{color: 'rgba(0,244,0,1)'}}>
+          What
+        </Text>{' '}
+        are {'\n'}you{' '}
+        <Text
+          fontFamily={fonts.PoppinsSemiBold}
+          fontSize={30}
+          style={{color: 'rgba(0,244,0,1)'}}>
+          {' '}
+          Looking for?
+        </Text>
+      </Text>
+    </Box>
+  );
+};
