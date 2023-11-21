@@ -8,6 +8,10 @@ import {Navigatioon} from './src/navigation';
 import {PortalProvider} from '@gorhom/portal';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
+import {Amplify} from 'aws-amplify';
+import amplifyconfig from './src/amplifyconfiguration.json';
+Amplify.configure(amplifyconfig);
+
 function App(): JSX.Element {
   return (
     <AppModeProvider>
