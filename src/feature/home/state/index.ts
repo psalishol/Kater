@@ -19,3 +19,5 @@ export const deviceLatLngAtom = atom<DeviceLatLng | undefined>(undefined);
 
 // Atom storing the current selected menu tab.
 export const selectedMenuAtom = atom<TabMenu>('Promos');
+
+export const menus: TabMenu[] = ['Promos', 'Products'];
