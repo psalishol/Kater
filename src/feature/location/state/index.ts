@@ -11,3 +11,13 @@ export interface DeviceLatLng {
 
 // Atom storing the state of device latitude and longitude.
 export const deviceLatLngAtom = atom<DeviceLatLng | undefined>(undefined);
+
+interface Location {
+  city: string;
+  state: string;
+  country: string;
+  fullAdress: string;
+}
+
+// Atom storing the state of the user current city.
+export const currentCityAtom = atom<Location | undefined>(undefined);
