@@ -10,12 +10,18 @@ export type RootParamList = {
   Login: undefined;
   SignUp: undefined;
   Entry: undefined;
+
+  Search: undefined;
 };
 
 export type DrawerStackParamList = {};
 
 export type BottomTabStackParamList = {
   Home: undefined;
+  Messages: undefined;
+  Profile: undefined;
+  Cart: undefined;
+  Orders: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootParamList> =
