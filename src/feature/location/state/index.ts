@@ -32,3 +32,5 @@ export const openChangeLocation = atom<boolean>(false);
 
 // Store filter query string for location in modal input.
 export const locationFilterQueryAtom = atom<string>('');
+
+export const cleanLocationRenderAtom = atom<boolean>(true);
