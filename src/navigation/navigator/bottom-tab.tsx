@@ -4,7 +4,9 @@ import {BottomTabStackParamList} from '../types';
 import {Home} from '../../feature/home';
 import {useDecodeRestyleColor} from '../../hooks';
 import {AntDesign} from '../../components/atom';
-// import {CustomBottomNavigationBar} from '../custom-navigation-component';
+import {CustomBottomNavigationBar} from '../custom-navigation-component';
+import {CartScreen} from '../../feature/cart';
+import {ProfileScreen} from '../../feature/profile';
 
 const Tab = createBottomTabNavigator<BottomTabStackParamList>();
 
@@ -13,20 +15,14 @@ const BottomTabNavigation = () => {
 
   return (
     <Tab.Navigator
-      // tabBar={props => <CustomBottomNavigationBar {...props} />} // Uncomment this if you will like to use custom drawer component
+      tabBar={props => <CustomBottomNavigationBar {...props} />} // Uncomment this if you will like to use custom drawer component
       screenOptions={{
         headerShown: false,
         lazy: true,
       }}>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: () => {
-            return <AntDesign name="home" color={'$foreground'} />;
-          },
-        }}
-      />
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Cart" component={CartScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 };
