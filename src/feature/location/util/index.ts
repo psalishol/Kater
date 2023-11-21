@@ -26,7 +26,7 @@ export const getLocation = async (
         state: '',
         city: '',
         country: '',
-        fullAdress: '',
+        fullAdress: response.data.results[0].formatted_address ?? '',
       };
 
       for (const component of addressComponents) {
