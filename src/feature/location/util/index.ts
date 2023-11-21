@@ -77,5 +77,7 @@ export const getCountryCityState = async (
       console.error('Error fetching cities:', response.data.status);
       return undefined;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error('Error fetching cities:', error);
+  }
 };
