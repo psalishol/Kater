@@ -29,7 +29,6 @@ const SignUp: React.FunctionComponent = () => {
       <SignupNameInput />
       <SignupEmailInput />
       <SignupPasswordInput />
-      <SignupButton />
       <SignUserUpButton />
     </GradientBackground>
   );
