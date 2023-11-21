@@ -1,6 +1,8 @@
 import {RequestService} from '../../../lib';
 import {Location} from '../state';
 
+const apiKey = 'AIzaSyAExqn-v-guxgZ8S1LyV7AttHLlmSBeqlU';
+
 /**getLocation fetches location from Latitude and Longitu
  *
  * @param latitude device current latitude
@@ -12,7 +14,6 @@ export const getLocation = async (
   longitude?: number,
 ): Promise<Location | undefined> => {
   const req = new RequestService();
-  const apiKey = 'AIzaSyAExqn-v-guxgZ8S1LyV7AttHLlmSBeqlU';
 
   const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
 
@@ -48,4 +49,33 @@ export const getLocation = async (
   } catch (error) {
     console.error('Error fetching address:', error);
   }
+};
+
+/**Gets the formatted city and state in a particular country
+ * @param country - Country to fetch the city and state
+ * @returns
+ */
+export const getCountryCityState = async (
+  country?: string,
+): Promise<string[] | undefined> => {
+  const req = new RequestService();
+
+  const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${country}&types=(cities)&key=${apiKey}`;
+
+  try {
+    const response = await req.getRequest(apiUrl);
+
+    if (response.data.status === 'OK') {
+      const location = response.data.predictions.map((prediction: any) => {
+        const city = prediction.structured_formatting.main_text;
+        const state = prediction.structured_formatting.secondary_text;
+        return `${city}, ${state}`;
+      });
+
+      return location;
+    } else {
+      console.error('Error fetching cities:', response.data.status);
+      return undefined;
+    }
+  } catch (error) {}
 };
