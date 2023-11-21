@@ -1,13 +1,29 @@
-import {useAtomValue} from 'jotai';
+import {useAtom, useAtomValue} from 'jotai';
 import {Entypo, Text, Touchable} from '../../../../components/atom';
 import {fonts} from '../../../../themes/fonts';
-import {useCallback} from 'react';
-import {currentCityAtom} from '../../state';
+import {useCallback, useEffect} from 'react';
+import {currentLocationAtom, deviceLatLngAtom} from '../../../location';
+import {getLocation} from '../../../location/util';
 
 const LocationChangerButton: React.FunctionComponent = () => {
   const handlePress = useCallback(() => {}, []);
 
-  const currentCity = useAtomValue(currentCityAtom);
+  const [currentLocation, setCurrentLocation] = useAtom(currentLocationAtom);
+
+  const latlng = useAtomValue(deviceLatLngAtom);
+
+  useEffect(() => {
+    // Check if the latlng is set and get the readable current location
+    if (latlng && !currentLocation) {
+      getLocation(latlng?.lat, latlng?.lng).then(location => {
+        setCurrentLocation(location);
+      });
+    }
+  }, [currentLocation, latlng]);
+
+  if (!currentLocation) {
+    return <></>;
+  }
 
   return (
     <Touchable
@@ -22,7 +38,7 @@ const LocationChangerButton: React.FunctionComponent = () => {
       alignItems="center">
       <Entypo size={18} name="location-pin" color={'$black'} />
       <Text ml="xs" fontFamily={fonts.InterMedium} color="$black">
-        {currentCity}
+        {currentLocation.city}, {currentLocation.state}
       </Text>
     </Touchable>
   );
