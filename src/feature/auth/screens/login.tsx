@@ -2,9 +2,14 @@ import {Box, Text} from '../../../components/atom';
 import React from 'react';
 import {useAppMode} from '../../light-dark-mode';
 import {GradientBackground} from '../../../components/organism';
-import {FlatButton} from '../../../components/molecules';
 import {fonts} from '../../../themes/fonts';
 import {screenHeight} from '../../../constant';
+import {
+  LoginButton,
+  LoginEmailInput,
+  LoginPasswordInput,
+  SignupButton,
+} from '../components/molecules';
 
 const Login: React.FunctionComponent = () => {
   const {state, isLight} = useAppMode();
@@ -20,14 +25,12 @@ const Login: React.FunctionComponent = () => {
         Kater lets you connect with your local businesses, getting what you need
         in no time. Fresh, local, and convenient
       </Text>
-      <FlatButton
-        mt="auto"
-        mb="lg"
-        color="$white"
-        label="Login"
-        bg={'$deepGreen'}
-        mx="md"
-      />
+
+      <LoginEmailInput />
+      <LoginPasswordInput />
+
+      <LoginButton />
+      <SignupButton />
     </GradientBackground>
   );
 };
