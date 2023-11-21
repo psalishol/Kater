@@ -11,12 +11,15 @@
     "reset": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^4.5.1",
+    "@gorhom/portal": "^1.0.14",
     "@react-native-async-storage/async-storage": "^1.19.4",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@shopify/restyle": "^2.4.2",
+    "jotai": "^2.5.1",
     "react": "18.2.0",
     "react-native": "0.72.7",
     "react-native-asset": "^2.1.1",
