@@ -10,6 +10,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {Amplify} from 'aws-amplify';
 import amplifyconfig from './src/amplifyconfiguration.json';
+import {SplashScreen} from './src/feature/auth';
 Amplify.configure(amplifyconfig);
 
 // import {DataStore} from 'aws-amplify/datastore';
@@ -40,6 +41,7 @@ const Entry: React.FunctionComponent = () => {
         <GestureHandlerRootView style={{flex: 1}}>
           <PortalProvider>
             <Navigatioon />
+            {/* <SplashScreen /> */}
           </PortalProvider>
         </GestureHandlerRootView>
       </NavigationContainer>

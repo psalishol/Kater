@@ -10,9 +10,19 @@ import {
 } from '../component/organism';
 import {CountryLocation, useGetDeviceLatLng} from '../../location';
 import {HomeHeaderMessageButton} from '../../message';
+import {useAtomValue} from 'jotai';
+import {userCurrentAccountAtom} from '../../../state';
+import {MyStoreScreen} from '../../mystore';
 
 const Home: React.FunctionComponent = () => {
   useGetDeviceLatLng();
+
+  const currentAccount = useAtomValue(userCurrentAccountAtom);
+
+  if (currentAccount?.type !== 'CUSTOMER') {
+    return <MyStoreScreen />;
+  }
+
   return (
     <GradientBackground>
       <ScrollView>

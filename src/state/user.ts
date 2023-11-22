@@ -1,5 +1,5 @@
 import {atom} from 'jotai';
-import {Account, User} from '../models';
+import {Account, User} from '../db';
 
 // Defines the user global state.
 export const userAtom = atom<User | undefined>(undefined);

@@ -4,6 +4,8 @@ import React from 'react';
 import {Login, SignUp} from '../../feature/auth';
 import BottomTabNavigation from './bottom-tab';
 import {SearchScreen} from '../../feature/search';
+import {CreateStoreAccount} from '../../feature/create-store-account';
+import {MessagesScreen} from '../../feature/message';
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -31,6 +33,20 @@ export const AuthenticatedStack: React.FunctionComponent = () => {
         component={SearchScreen}
         options={{
           animation: 'fade_from_bottom',
+        }}
+      />
+      <Stack.Screen
+        name="CreateStoreAccount"
+        component={CreateStoreAccount}
+        options={{
+          animation: 'slide_from_right',
+        }}
+      />
+      <Stack.Screen
+        name="Messages"
+        component={MessagesScreen}
+        options={{
+          animation: 'slide_from_right',
         }}
       />
     </Stack.Navigator>

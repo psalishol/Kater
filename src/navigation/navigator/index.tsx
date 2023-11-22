@@ -2,21 +2,29 @@ import React, {useEffect, useState} from 'react';
 import {AuthenticatedStack, UnAuthenticatedStack} from './stack';
 import {useAtom, useAtomValue} from 'jotai';
 import {userAtom} from '../../state';
+import {SplashScreen} from '../../feature/auth';
 
 export const Navigatioon = () => {
   const [currentUser, setCurrentUser] = useAtom(userAtom);
 
-  useEffect(() => {
-    const getAuthenticatedAsync = () => {
-      // handle checking authentication status here
-    };
+  const [animating, setAnimating] = useState<boolean>(true);
 
-    getAuthenticatedAsync();
+  useEffect(() => {
+    // const getAuthenticatedAsync = () => {
+    //   // handle checking authentication status here
+    // };
+
+    // getAuthenticatedAsync();
+
+    setTimeout(() => {
+      setAnimating(false);
+    }, 2000);
   }, []);
   return (
     <>
-      {!currentUser && <UnAuthenticatedStack />}
-      {currentUser && <AuthenticatedStack />}
+      {!currentUser && !animating && <UnAuthenticatedStack />}
+      {currentUser && !animating && <AuthenticatedStack />}
+      {animating && <SplashScreen />}
     </>
   );
 };

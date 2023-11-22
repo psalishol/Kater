@@ -6,8 +6,9 @@ import {
   currentLocationAtom,
   deviceLatLngAtom,
   openChangeLocation,
+  useDestructuredGetLocation,
 } from '../../../location';
-import {getLocation} from '../../../location/util';
+import {getLocation as getGeolocation} from '../../../location/util';
 import {size} from '../../../../helper';
 
 const LocationChangerButton: React.FunctionComponent = () => {
@@ -21,18 +22,25 @@ const LocationChangerButton: React.FunctionComponent = () => {
 
   const latlng = useAtomValue(deviceLatLngAtom);
 
+  const {getLocation} = useDestructuredGetLocation();
+
   useEffect(() => {
     // Check if the latlng is set and get the readable current location
-    if (latlng && !currentLocation) {
-      getLocation(latlng?.lat, latlng?.lng).then(location => {
-        setCurrentLocation(location);
+    if (!currentLocation) {
+      getLocation().then(loc => {
+        getGeolocation(loc?.latitude, loc?.longitude).then(_location => {
+          setCurrentLocation(_location);
+        });
       });
     }
   }, [currentLocation, latlng]);
 
+  console.log(currentLocation?.city)
+
   if (!currentLocation) {
     return <></>;
   }
+
 
   return (
     <Touchable

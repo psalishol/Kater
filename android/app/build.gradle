@@ -98,7 +98,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.kater"
+    namespace "com.cater"
     defaultConfig {
         applicationId "com.kater"
         minSdkVersion rootProject.ext.minSdkVersion

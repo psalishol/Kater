@@ -8,6 +8,7 @@ import {
   Feather,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
   Pressable,
   Text,
 } from '../../components/atom';
@@ -17,6 +18,8 @@ import {NavigationHelpers, ParamListBase} from '@react-navigation/native';
 import {Platform} from 'react-native';
 
 import {ResponsiveColorPropType} from '../../themes/theme';
+import {useAtomValue} from 'jotai';
+import {userCurrentAccountAtom} from '../../state';
 
 const CustomBottomNavigationBar: React.FC<BottomTabBarProps> = props => {
   const {navigation, state: navState} = props;
@@ -72,6 +75,9 @@ const BottomTabNavigationItem: React.FC<Props> = ({
   routeKey,
   routeName,
 }) => {
+  const merchantAccount =
+    useAtomValue(userCurrentAccountAtom)?.type !== 'CUSTOMER';
+
   const handlePress = useCallback(() => {
     const event = navigation.emit({
       type: 'tabPress',
@@ -99,17 +105,21 @@ const BottomTabNavigationItem: React.FC<Props> = ({
         onPress={handlePress}>
         {routeName === 'Home' && (
           <Box mt={'md'} justifyContent={'center'} alignItems={'center'}>
-            <AntDesign name="home" color={color} />
+            {!merchantAccount && <AntDesign name="home" color={color} />}
+            {merchantAccount && (
+              <MaterialIcons name="storefront" color={color} />
+            )}
             <Text color={color} fontSize={size(12)} mt={'sm'}>
-              Home
+              {merchantAccount ? 'My store' : 'Home'}
             </Text>
           </Box>
         )}
         {routeName === 'Cart' && (
           <Box mt={'md'} justifyContent={'center'} alignItems={'center'}>
-            <Feather name="shopping-cart" color={color} />
+            {!merchantAccount && <Feather name="shopping-cart" color={color} />}
+            {merchantAccount && <Feather name="package" color={color} />}
             <Text color={color} fontSize={size(12)} mt={'sm'}>
-              Cart
+              {merchantAccount ? 'Orders' : 'Cart'}
             </Text>
           </Box>
         )}

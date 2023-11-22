@@ -12,6 +12,8 @@ export type RootParamList = {
   Entry: undefined;
 
   Search: undefined;
+  CreateStoreAccount: undefined;
+  Messages: undefined;
 };
 
 export type DrawerStackParamList = {};

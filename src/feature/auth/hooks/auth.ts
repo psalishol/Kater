@@ -15,6 +15,7 @@ import {
 import firestore, {Filter} from '@react-native-firebase/firestore';
 import {Account, AccountType, User, saveToDb} from '../../../db';
 import {queryDb} from '../../../db/util/query-db';
+import {Keyboard} from 'react-native';
 
 // userSignup de
 export const useSignup = () => {
@@ -35,6 +36,8 @@ export const useSignup = () => {
 
   // handles user login
   const handlePress = async () => {
+    Keyboard.dismiss();
+
     if (isValid) {
       setErrMsg('');
       try {
@@ -178,6 +181,7 @@ export const useLogin = () => {
 
   // handles user login
   const handlePress = async () => {
+    Keyboard.dismiss();
     if (isValid) {
       setErrMsg('');
       try {
