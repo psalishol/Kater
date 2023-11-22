@@ -1,25 +1,17 @@
-import {useAtom, useAtomValue} from 'jotai';
+import {useAtomValue} from 'jotai';
 import {FlatButton} from '../../../../components/molecules';
-import {loginEmailQueryAtom, loginPasswordQueryAtom} from '../../state';
+import {authenticatingAtom} from '../../state';
+import {useLogin} from '../../hooks';
 
 const LoginButton: React.FunctionComponent = () => {
-  const [email, setEmail] = useAtom(loginEmailQueryAtom);
-  const [password, setPassword] = useAtom(loginPasswordQueryAtom);
+  const {handlePress} = useLogin();
 
-  // handles user login
-  const handleSignIn = async () => {
-    try {
-      // Reset sign in form
-      setEmail('');
-      setPassword('');
-    } catch (error) {
-      console.log('error signing in', error);
-    }
-  };
+  const authenticating = useAtomValue(authenticatingAtom);
 
   return (
     <FlatButton
-      onPress={handleSignIn}
+      onPress={authenticating ? undefined : handlePress}
+      loading={authenticating}
       mt="2xl"
       color="$white"
       label="Login"
