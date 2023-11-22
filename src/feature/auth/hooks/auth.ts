@@ -1,9 +1,6 @@
-import {DataStore} from 'aws-amplify/datastore';
-import {} from 'aws-amplify';
 import {useAtom, useSetAtom} from 'jotai';
 import {project_id} from '../../../../config';
 import {RequestService, LocalStorageService} from '../../../lib';
-import {User, AccountType, Account} from '../../../models';
 import {userAtom, accountsAtom, userCurrentAccountAtom} from '../../../state';
 import {
   signupUsernameQueryAtom,
@@ -15,13 +12,17 @@ import {
   authErrMsgAtom,
 } from '../state';
 
-import firestore from '@react-native-firebase/firestore';
+import firestore, {Filter} from '@react-native-firebase/firestore';
+import {Account, AccountType, User, saveToDb} from '../../../db';
+import {queryDb} from '../../../db/util/query-db';
 
 // userSignup de
 export const useSignup = () => {
   const [name, setName] = useAtom(signupUsernameQueryAtom);
   const [email, setEmail] = useAtom(signupEmailQueryAtom);
   const [password, setPassword] = useAtom(signupPasswordQueryAtom);
+
+  const setCurrentAccount = useSetAtom(userCurrentAccountAtom);
 
   const setErrMsg = useSetAtom(authErrMsgAtom);
 
@@ -78,32 +79,29 @@ export const useSignup = () => {
             name,
             email,
             storeFollowingIDs: [],
+            createdAt: new Date().toISOString(),
           };
 
-          console.log('trying to create user, payload ', createUserPayload);
-
           // Create the user.
-          const createdUser = await DataStore.save(new User(createUserPayload));
-
-          console.log('create user ', createdUser);
+          await saveToDb('Users', createUserPayload, email);
 
           // Create  user customer account.
           const createCustomerAccountPayload = {
             type: AccountType.CUSTOMER,
-            userID: createdUser.id,
+            userID: email,
+            createdAt: new Date().toISOString(),
           };
 
-          const userAccount = await DataStore.save(
-            new Account(createCustomerAccountPayload),
-          );
-
-          console.log('done', userAccount);
+          await saveToDb('Accounts', createCustomerAccountPayload);
 
           // set account to state
-          setAccount(prev => [...prev, userAccount]);
+          setAccount([createCustomerAccountPayload]);
+
+          // set current account to state
+          setCurrentAccount(createCustomerAccountPayload);
 
           // set user to state.
-          setUser(createdUser);
+          setUser(createUserPayload);
 
           // set Authenticating to false
           setAuthenticating(false);
@@ -111,8 +109,10 @@ export const useSignup = () => {
           // Store user and account to localDB
           const storage = new LocalStorageService();
 
-          await storage.writeToStorage('@user', createdUser);
-          await storage.writeToStorage('@accounts', [userAccount]);
+          await storage.writeToStorage('@user', createUserPayload);
+          await storage.writeToStorage('@accounts', [
+            createCustomerAccountPayload,
+          ]);
 
           // Reset sign in form
           setName('');
@@ -147,6 +147,35 @@ export const useLogin = () => {
   const setAuthenticating = useSetAtom(authenticatingAtom);
   const setErrMsg = useSetAtom(authErrMsgAtom);
 
+  const getUserAccounts = async () => {
+    try {
+      let data: Account[] = [];
+
+      const querySnapshot = await firestore()
+        .collection('Accounts')
+        .where('userID', '==', email)
+        .get();
+
+      querySnapshot.forEach(documentSnapshot => {
+        const queryData = documentSnapshot.data();
+        data.push({
+          userID: queryData?.userID,
+          store_name: queryData?.store_name,
+          type: queryData?.type,
+          store_cover_img: queryData?.store_cover_img,
+          address: queryData?.address,
+          city: queryData?.city,
+          country: queryData?.country,
+          createdAt: queryData?.createdAt,
+        });
+      });
+
+      return data;
+    } catch (error) {
+      console.log(error, 'error getting useraccounts');
+    }
+  };
+
   // handles user login
   const handlePress = async () => {
     if (isValid) {
@@ -174,59 +203,46 @@ export const useLogin = () => {
 
         console.log('sign in response', response);
 
-        if (response.data.status === 200) {
+        if (response.status === 200) {
           // If login was successful, query the user using the provided email
+          const userSnapShotData = await queryDb('Users', email);
 
-          const queryUser = await DataStore.query(User, p =>
-            p.email.eq(email!),
-          );
+          const user: User = {
+            name: userSnapShotData?.name,
+            email: userSnapShotData?.email,
+            storeFollowingIDs: userSnapShotData?.storeFollowingIDs,
+            createdAt: userSnapShotData?.createdAt,
+          };
 
-          console.log('query response', queryUser);
+          const accounts = await getUserAccounts();
 
-          // Check if the user with the email exists.
-          if (queryUser && queryUser.length > 0) {
-            // query the user's accounts
-            const userAccounts = await DataStore.query(Account, p =>
-              p.userID.eq(queryUser[0].id),
+          if (user && accounts) {
+            // set account to state
+            setAccount(accounts ?? []);
+
+            // check if the user has merchant account
+            const merchantAccount = accounts?.find(e => e.type !== 'CUSTOMER');
+
+            // if merchant account exist, set it to state else set customer accoun.
+            setCurrentAccount(
+              merchantAccount ?? (accounts ? accounts[0] : undefined),
             );
 
-            console.log('user accounts response', userAccounts);
-
-            if (userAccounts.length > 0) {
-              // check if the user has merchant account. then set the current account to the
-              // store account. if not set to customer account.
-              const merchantAccount = userAccounts.find(
-                e => e.type !== 'CUSTOMER',
-              );
-
-              console.log('merchant response', userAccounts);
-
-              if (merchantAccount) {
-                setCurrentAccount(merchantAccount);
-              } else {
-                setCurrentAccount(userAccounts[0]); // default to customer account
-              }
-            }
-
-            // set account to state
-            setAccount(userAccounts);
-
             // set user to state.
-            setUser(queryUser[0]);
+            setUser(user);
 
             // set authenticating to false
             setAuthenticating(false);
-
             // Store user and account to localDB
             const storage = new LocalStorageService();
 
-            await storage.writeToStorage('@user', queryUser);
-            await storage.writeToStorage('@accounts', userAccounts);
-          }
+            await storage.writeToStorage('@user', user);
+            await storage.writeToStorage('@accounts', accounts);
 
-          // Reset sign in form
-          setEmail('');
-          setPassword('');
+            // Reset sign in form
+            setEmail('');
+            setPassword('');
+          }
         }
 
         setAuthenticating(false);
