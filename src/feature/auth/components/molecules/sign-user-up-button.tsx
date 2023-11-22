@@ -1,4 +1,4 @@
-import {useAtom} from 'jotai';
+import {useAtom, useSetAtom} from 'jotai';
 import {FlatButton} from '../../../../components/molecules';
 import {
   signupUsernameQueryAtom,
@@ -6,22 +6,22 @@ import {
   signupPasswordQueryAtom,
 } from '../../state';
 
-import {RequestService} from '../../../../lib';
+import {LocalStorageService, RequestService} from '../../../../lib';
 import {authivate_token} from '@env';
-import {project_id, world_api_token} from '../../../../../config';
+import {project_id} from '../../../../../config';
 
 import {DataStore} from 'aws-amplify/datastore';
 
-import {generateClient} from 'aws-amplify/api';
-
-import {get} from 'aws-amplify/api';
 import {Account, AccountType, User} from '../../../../models';
-
+import {accountsAtom, userAtom} from '../../../../state';
 
 const SignUserUpButton: React.FunctionComponent = () => {
   const [name, setName] = useAtom(signupUsernameQueryAtom);
   const [email, setEmail] = useAtom(signupEmailQueryAtom);
   const [password, setPassword] = useAtom(signupPasswordQueryAtom);
+
+  const setUser = useSetAtom(userAtom);
+  const setAccount = useSetAtom(accountsAtom);
 
   const isValid = !!name && !!email && !!password;
 
@@ -29,7 +29,6 @@ const SignUserUpButton: React.FunctionComponent = () => {
 
   // handles user login
   const handleSignIn = async () => {
-    console.log(isValid);
     if (isValid) {
       try {
         const req = new RequestService();
@@ -84,8 +83,16 @@ const SignUserUpButton: React.FunctionComponent = () => {
           );
 
           // set user to state.
+          setUser(createdUser);
 
           // set account to state
+          setAccount(prev => [...prev, userAccount]);
+
+          // Store user and account to localDB
+          const storage = new LocalStorageService();
+
+          await storage.writeToStorage('@user', createdUser);
+          await storage.writeToStorage('@accounts', [userAccount]);
 
           // Reset sign in form
           setName('');
