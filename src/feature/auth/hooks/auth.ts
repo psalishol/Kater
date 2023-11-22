@@ -1,6 +1,6 @@
 import {DataStore} from 'aws-amplify/dist/esm/datastore';
 import {useAtom, useSetAtom} from 'jotai';
-import {authivate_token, project_id} from '../../../../config';
+import {project_id} from '../../../../config';
 import {RequestService, LocalStorageService} from '../../../lib';
 import {User, AccountType, Account} from '../../../models';
 import {userAtom, accountsAtom, userCurrentAccountAtom} from '../../../state';
@@ -10,6 +10,7 @@ import {
   signupPasswordQueryAtom,
   loginEmailQueryAtom,
   loginPasswordQueryAtom,
+  authenticatingAtom,
 } from '../state';
 
 // userSignup de
@@ -23,12 +24,13 @@ export const useSignup = () => {
 
   const isValid = !!name && !!email && !!password;
 
-  console.log('authivate', authivate_token);
+  const setAuthenticating = useSetAtom(authenticatingAtom);
 
   // handles user login
   const handlePress = async () => {
     if (isValid) {
       try {
+        setAuthenticating(true);
         const req = new RequestService();
 
         const apiUrl = 'https://api.authivate.com/api/v1/p/user/signup/';
@@ -86,6 +88,9 @@ export const useSignup = () => {
           // set user to state.
           setUser(createdUser);
 
+          // set Authenticating to false
+          setAuthenticating(false);
+
           // Store user and account to localDB
           const storage = new LocalStorageService();
 
@@ -97,8 +102,11 @@ export const useSignup = () => {
           setEmail('');
           setPassword('');
         }
+
+        setAuthenticating(false);
       } catch (error) {
         console.log('error signing in', error);
+        setAuthenticating(false);
       }
     }
   };
@@ -116,12 +124,13 @@ export const useLogin = () => {
 
   const isValid = !!email && !!password;
 
-  console.log('authivate', authivate_token);
+  const setAuthenticating = useSetAtom(authenticatingAtom);
 
   // handles user login
   const handlePress = async () => {
     if (isValid) {
       try {
+        setAuthenticating(true);
         const req = new RequestService();
 
         const apiUrl = 'https://api.authivate.com/api/v1/p/user/signin/';
@@ -175,6 +184,9 @@ export const useLogin = () => {
             // set user to state.
             setUser(queryUser[0]);
 
+            // set authenticating to false
+            setAuthenticating(false);
+
             // Store user and account to localDB
             const storage = new LocalStorageService();
 
@@ -186,8 +198,11 @@ export const useLogin = () => {
           setEmail('');
           setPassword('');
         }
+
+        setAuthenticating(false);
       } catch (error) {
         console.log('error signing in', error);
+        setAuthenticating(false);
       }
     }
   };
