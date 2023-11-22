@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {AuthenticatedStack, UnAuthenticatedStack} from './stack';
 
 export const Navigatioon = () => {
-  const [authenticated] = useState<boolean>(true);
+  const [authenticated] = useState<boolean>(false);
 
   useEffect(() => {
     const getAuthenticatedAsync = () => {

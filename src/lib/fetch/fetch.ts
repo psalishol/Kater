@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import {world_api_token, authivate_token} from '@env';
+import {authivate_token, world_api_token} from '../../../config';
 
 class RequestService {
-  private authHeader = {
+  authHeader = {
     'X-RapidAPI-Key': world_api_token,
     'X-RapidAPI-Host': 'andruxnet-world-cities-v1.p.rapidapi.com',
   };

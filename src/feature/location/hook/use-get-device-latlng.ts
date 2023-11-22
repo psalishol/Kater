@@ -1,7 +1,7 @@
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 
-import GetLocation from 'react-native-get-location';
+import GetLocation, {Location} from 'react-native-get-location';
 import {deviceLatLngAtom} from '../state';
 
 /**useGetDeviceLatLng gets the user device latitude and longitude
@@ -12,19 +12,25 @@ const useGetDeviceLatLng = () => {
 
   useEffect(() => {
     if (!deviceLatLng) {
-      GetLocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 60000,
-      })
-        .then(location => {
-          setDeviceLatLng({lat: location.latitude, lng: location.longitude});
-        })
-        .catch(error => {
-          const {code, message} = error;
-          console.warn(code, `unable to get device location: ${message}`);
-        });
     }
   }, [deviceLatLng]);
 };
 
 export default useGetDeviceLatLng;
+
+export const useDestructuredGetLocation = () => {
+  const getLocation = async (): Promise<Location | undefined> => {
+    try {
+      const location = await GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 60000,
+      });
+
+      return location;
+    } catch (error) {
+      return undefined;
+    }
+  };
+
+  return {getLocation};
+};

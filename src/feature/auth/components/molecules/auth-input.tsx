@@ -10,6 +10,8 @@ import {
   TextInput,
 } from '../../../../components/atom';
 import {fonts} from '../../../../themes/fonts';
+import {useSetAtom} from 'jotai';
+import {authErrMsgAtom} from '../../state';
 
 interface Props {
   onChangeText: (value: string) => void;
@@ -31,8 +33,15 @@ const AuthInput: React.FunctionComponent<Props> = props => {
 
   const [obscure, setObscure] = useState<boolean>(true);
 
+  const setErrMsg = useSetAtom(authErrMsgAtom);
+
   const handlePress = useCallback(() => {
     setObscure(prev => !prev);
+  }, []);
+
+  const handleChangeText = useCallback((e: string) => {
+    setErrMsg('');
+    onChangeText(e);
   }, []);
 
   return (
@@ -55,7 +64,7 @@ const AuthInput: React.FunctionComponent<Props> = props => {
           onBlur={setFocused}
           color={'$black'}
           placeholder={focused ? '' : placeHolder}
-          onChangeText={onChangeText}
+          onChangeText={handleChangeText}
           value={value}
           fontSize={14}
           fontFamily={fonts.RobotoMedium}

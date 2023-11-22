@@ -8,3 +8,7 @@ export const loginPasswordQueryAtom = atom<string>('');
 export const signupEmailQueryAtom = atom<string>('');
 export const signupPasswordQueryAtom = atom<string>('');
 export const signupUsernameQueryAtom = atom<string>('');
+
+export const authenticatingAtom = atom<boolean>(false);
+
+export const authErrMsgAtom = atom<string>('');

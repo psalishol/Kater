@@ -1,4 +1,5 @@
 import {DataStore} from 'aws-amplify/datastore';
+import {} from 'aws-amplify';
 import {useAtom, useSetAtom} from 'jotai';
 import {project_id} from '../../../../config';
 import {RequestService, LocalStorageService} from '../../../lib';
@@ -11,13 +12,18 @@ import {
   loginEmailQueryAtom,
   loginPasswordQueryAtom,
   authenticatingAtom,
+  authErrMsgAtom,
 } from '../state';
+
+import firestore from '@react-native-firebase/firestore';
 
 // userSignup de
 export const useSignup = () => {
   const [name, setName] = useAtom(signupUsernameQueryAtom);
   const [email, setEmail] = useAtom(signupEmailQueryAtom);
   const [password, setPassword] = useAtom(signupPasswordQueryAtom);
+
+  const setErrMsg = useSetAtom(authErrMsgAtom);
 
   const setUser = useSetAtom(userAtom);
   const setAccount = useSetAtom(accountsAtom);
@@ -29,7 +35,10 @@ export const useSignup = () => {
   // handles user login
   const handlePress = async () => {
     if (isValid) {
+      setErrMsg('');
       try {
+        console.log('starting authentication');
+
         setAuthenticating(true);
         const req = new RequestService();
 
@@ -60,7 +69,9 @@ export const useSignup = () => {
         // The main communication channel is the phone number which would be implemented later.
         const response = await req.postRequest(apiUrl, body, true, true);
 
-        if (response.data.status === 200) {
+        console.log('sign up response', response);
+
+        if (response.status === 200) {
           // If the user authentication is succesful, save the new user
           // in db and create a customer account for the user.
           const createUserPayload = {
@@ -69,8 +80,12 @@ export const useSignup = () => {
             storeFollowingIDs: [],
           };
 
+          console.log('trying to create user, payload ', createUserPayload);
+
           // Create the user.
           const createdUser = await DataStore.save(new User(createUserPayload));
+
+          console.log('create user ', createdUser);
 
           // Create  user customer account.
           const createCustomerAccountPayload = {
@@ -81,6 +96,8 @@ export const useSignup = () => {
           const userAccount = await DataStore.save(
             new Account(createCustomerAccountPayload),
           );
+
+          console.log('done', userAccount);
 
           // set account to state
           setAccount(prev => [...prev, userAccount]);
@@ -107,7 +124,10 @@ export const useSignup = () => {
       } catch (error) {
         console.log('error signing in', error);
         setAuthenticating(false);
+        setErrMsg('Error signing in');
       }
+    } else {
+      setErrMsg('Kindly fill all form field.');
     }
   };
 
@@ -125,10 +145,12 @@ export const useLogin = () => {
   const isValid = !!email && !!password;
 
   const setAuthenticating = useSetAtom(authenticatingAtom);
+  const setErrMsg = useSetAtom(authErrMsgAtom);
 
   // handles user login
   const handlePress = async () => {
     if (isValid) {
+      setErrMsg('');
       try {
         setAuthenticating(true);
         const req = new RequestService();
@@ -150,12 +172,16 @@ export const useLogin = () => {
 
         const response = await req.postRequest(apiUrl, body, true, true);
 
+        console.log('sign in response', response);
+
         if (response.data.status === 200) {
           // If login was successful, query the user using the provided email
 
           const queryUser = await DataStore.query(User, p =>
             p.email.eq(email!),
           );
+
+          console.log('query response', queryUser);
 
           // Check if the user with the email exists.
           if (queryUser && queryUser.length > 0) {
@@ -164,12 +190,16 @@ export const useLogin = () => {
               p.userID.eq(queryUser[0].id),
             );
 
+            console.log('user accounts response', userAccounts);
+
             if (userAccounts.length > 0) {
               // check if the user has merchant account. then set the current account to the
               // store account. if not set to customer account.
               const merchantAccount = userAccounts.find(
                 e => e.type !== 'CUSTOMER',
               );
+
+              console.log('merchant response', userAccounts);
 
               if (merchantAccount) {
                 setCurrentAccount(merchantAccount);
@@ -204,6 +234,8 @@ export const useLogin = () => {
         console.log('error signing in', error);
         setAuthenticating(false);
       }
+    } else {
+      setErrMsg('Kindly fill all form field');
     }
   };
 

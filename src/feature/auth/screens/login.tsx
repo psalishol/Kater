@@ -10,6 +10,7 @@ import {
   LoginPasswordInput,
   SignupButton,
 } from '../components/molecules';
+import {AuthError} from '../components/atom';
 
 const Login: React.FunctionComponent = () => {
   const {state, isLight} = useAppMode();
@@ -28,6 +29,8 @@ const Login: React.FunctionComponent = () => {
 
       <LoginEmailInput />
       <LoginPasswordInput />
+
+      <AuthError />
 
       <LoginButton />
       <SignupButton />

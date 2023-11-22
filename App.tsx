@@ -12,6 +12,13 @@ import {Amplify} from 'aws-amplify';
 import amplifyconfig from './src/amplifyconfiguration.json';
 Amplify.configure(amplifyconfig);
 
+// import {DataStore} from 'aws-amplify/datastore';
+// import {SQLiteAdapter} from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
+
+// DataStore.configure({
+//   storageAdapter: SQLiteAdapter,
+// });
+
 function App(): JSX.Element {
   return (
     <AppModeProvider>

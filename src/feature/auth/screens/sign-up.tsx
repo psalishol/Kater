@@ -11,6 +11,7 @@ import {
   SignupNameInput,
   SignupPasswordInput,
 } from '../components/molecules';
+import {AuthError} from '../components/atom';
 
 const SignUp: React.FunctionComponent = () => {
   return (
@@ -29,6 +30,9 @@ const SignUp: React.FunctionComponent = () => {
       <SignupNameInput />
       <SignupEmailInput />
       <SignupPasswordInput />
+
+      <AuthError />
+
       <SignUserUpButton />
     </GradientBackground>
   );
