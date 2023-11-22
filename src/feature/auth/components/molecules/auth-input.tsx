@@ -9,6 +9,7 @@ import {
   Text,
   TextInput,
 } from '../../../../components/atom';
+import {fonts} from '../../../../themes/fonts';
 
 interface Props {
   onChangeText: (value: string) => void;
@@ -56,7 +57,8 @@ const AuthInput: React.FunctionComponent<Props> = props => {
           placeholder={focused ? '' : placeHolder}
           onChangeText={onChangeText}
           value={value}
-          fontSize={size(13)}
+          fontSize={14}
+          fontFamily={fonts.RobotoMedium}
         />
         {password && (
           <Pressable mr={'sm'} onPress={handlePress} opacity={0.3} ml={'auto'}>
