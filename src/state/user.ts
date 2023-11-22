@@ -5,4 +5,4 @@ import {Account, User} from '../models';
 export const userAtom = atom<User | undefined>(undefined);
 
 // defines the user account.
-export const accountsAtom = atom<Account[] | undefined>(undefined);
+export const accountsAtom = atom<Account[]>([]);
