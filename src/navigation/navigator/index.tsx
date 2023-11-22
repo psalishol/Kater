@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {AuthenticatedStack, UnAuthenticatedStack} from './stack';
+import {useAtom, useAtomValue} from 'jotai';
+import {userAtom} from '../../state';
 
 export const Navigatioon = () => {
-  const [authenticated] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useAtom(userAtom);
 
   useEffect(() => {
     const getAuthenticatedAsync = () => {
@@ -13,8 +15,8 @@ export const Navigatioon = () => {
   }, []);
   return (
     <>
-      {!authenticated && <UnAuthenticatedStack />}
-      {authenticated && <AuthenticatedStack />}
+      {!currentUser && <UnAuthenticatedStack />}
+      {currentUser && <AuthenticatedStack />}
     </>
   );
 };
