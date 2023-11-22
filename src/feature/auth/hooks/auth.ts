@@ -1,4 +1,4 @@
-import {DataStore} from 'aws-amplify/dist/esm/datastore';
+import {DataStore} from 'aws-amplify/datastore';
 import {useAtom, useSetAtom} from 'jotai';
 import {project_id} from '../../../../config';
 import {RequestService, LocalStorageService} from '../../../lib';
