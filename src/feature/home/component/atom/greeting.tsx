@@ -1,8 +1,10 @@
+import {useAtomValue} from 'jotai';
 import {Box, Text} from '../../../../components/atom';
 import {fonts} from '../../../../themes/fonts';
+import {userAtom} from '../../../../state';
 
 const Greeting: React.FunctionComponent = () => {
-  const username = 'Psalishol';
+  const username = useAtomValue(userAtom)?.name;
   return (
     <Box mx="sm">
       <Text
